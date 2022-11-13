@@ -60,7 +60,7 @@ Shader "Unlit/HologramShaderThing"
                     o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                     return o;
                 }
-                else
+                else  // not strictly needed
                 {
                     v.vertex.x += sin(_Time.y * _Speed + v.vertex.x * _Amplitude) * _Distance * _MovementFactor;
                     o.vertex = UnityObjectToClipPos(v.vertex);
