@@ -27,11 +27,12 @@ Material:
     - _Amount: 1
     - _Amplitude: 1
     - _CutoutThresh: 0
-    - _Direction: 1
+    - _Direction: 0
     - _Distance: 1
-    - _MovementFactor: 0.049
+    - _MovementFactor: 0.25
     - _Speed: 1
     - _Transparency: 0.1029
     m_Colors:
     - _TintColor: {r: 0, g: 0.98080873, b: 1, a: 1}
+    - _TintColour: {r: 1, g: 0.89095026, b: 0.6933962, a: 1}
   m_BuildTextureStacks: []

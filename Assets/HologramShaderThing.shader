@@ -1,16 +1,16 @@
 Shader "Unlit/HologramShaderThing"
 {
- Properties
+ Properties // code based on the unity shader tutorial
     {
         _MainTex ("Albedo Texture", 2D) = "white" {}
         _TintColour("Tint Colour", Color) = (1,1,1,1)
         _Transparency("Transparency", Range(0.0,0.5)) = 0.25
-        _CutoutThresh("Cutout Threshold", Range(0.0,1.0)) = 0.2
+        _CutoutThresh("Alpha Threshold", Range(0.0,1.0)) = 0.2
         _Distance("Distance", Float) = 1
         _Amplitude("Amplitude", Float) = 1
         _Speed ("Speed", Float) = 1
         _Direction("Direction", Range (0.0,1.0)) = 0 
-        _MovementFactor("_MovementFactor", Range(0.0,1.0)) = 1
+        _MovementFactor("MovementFactor", Range(0.0,1.0)) = 1
     }
 
     SubShader
@@ -43,8 +43,8 @@ Shader "Unlit/HologramShaderThing"
             float4 _MainTex_ST;
             float4 _TintColour;
             float _Transparency;
-            float _CutoutThresh;
-            float _Distance;
+            float _AlphaThresh;
+            //float _Distance;
             float _Amplitude;
             float _Speed;
             float _MovementFactor;
@@ -55,14 +55,14 @@ Shader "Unlit/HologramShaderThing"
                 v2f o;
                 if (_Direction > 0.5)
                 {
-                    v.vertex.y += sin(_Time.y * _Speed + v.vertex.y * _Amplitude) * _Distance * _MovementFactor;
+                    v.vertex.y += sin(_Time.y * _Speed + v.vertex.y * _Amplitude)  * _MovementFactor;
                     o.vertex = UnityObjectToClipPos(v.vertex);
                     o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                     return o;
                 }
                 else  // not strictly needed
                 {
-                    v.vertex.x += sin(_Time.y * _Speed + v.vertex.x * _Amplitude) * _Distance * _MovementFactor;
+                    v.vertex.x += sin(_Time.y * _Speed + v.vertex.x * _Amplitude)  * _MovementFactor;
                     o.vertex = UnityObjectToClipPos(v.vertex);
                     o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                     return o;
@@ -71,10 +71,9 @@ Shader "Unlit/HologramShaderThing"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv) + _TintColour;
                 col.a = _Transparency;
-                clip(col.r - _CutoutThresh);
+                clip(col.r - _AlphaThresh);
                 return col;
             }
             ENDCG
